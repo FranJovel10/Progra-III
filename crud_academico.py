@@ -1,4 +1,4 @@
-#pip install mysql-connector-python
+##pip install mysql-connector-python
 import mysql.connector
 from mysql.connector import Error
 
@@ -8,8 +8,11 @@ class crud:
         self.conexion = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="",
+            password="Josejovel102030",
             database="db_academica"
+            charset="utf8",
+            collation="utf8mb4_general_ci",
+            port=33061
         )
         if self.conexion.is_connected():
             print("Conectado")
