@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios</title>
+    <script>
+        function obtenerUsuarios() {
+            fetch('http://127.0.0.1:5000/usuarios')
+            .then(response => response.json())
+            .then(data => {
+                let usuariosTable = '<table border="1"><tr><th>ID</th><th>Usuario</th><th>Nombre</th><th>Dirección</th><th>Teléfono</th><th>Acciones</th></tr>';
+                data.forEach(usuario => {
+                    usuariosTable += `<tr>
+                        <td>${usuario.idUsuario}</td>
+                        <td>${usuario.usuario}</td>
+                        <td>${usuario.nombre}</td>
+                        <td>${usuario.direccion}</td>
+                        <td>${usuario.telefono}</td>
+                        <td>
+                            <button onclick="editarUsuario(${usuario.idUsuario})">Editar</button>
+                            <button onclick="eliminarUsuario(${usuario.idUsuario})">Eliminar</button>
+                        </td>
+                    </tr>`;
+                });
+                usuariosTable += '</table>';
+                document.getElementById('usuarios').innerHTML = usuariosTable;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function eliminarUsuario(id) {
+            fetch(`http://127.0.0.1:5000/usuarios/${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                obtenerUsuarios();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h2>Listado de Usuarios</h2>
+    <button onclick="obtenerUsuarios()">Cargar Usuarios</button>
+    <div id="usuarios"></div>
+</body>
+</html>
+
